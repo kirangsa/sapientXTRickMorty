@@ -21,7 +21,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChipsModule} from '@angular/material/chips';
 import {LayoutModule} from '@angular/cdk/layout';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -59,15 +59,16 @@ import { ChipsComponent } from './home/components/chips/chips.component';
     MatExpansionModule,
     MatChipsModule,
     MatButtonModule,
+    MatProgressBarModule,
     LayoutModule,
     FormsModule,
     ReactiveFormsModule,
     StoreModule.forRoot({ 'characters' : characterReducers}, {
       runtimeChecks: {
-        strictStateImmutability: true,
+        strictStateImmutability: false,
         strictActionImmutability: true,
-        strictActionSerializability: true,
-        strictStateSerializability: true,
+        strictActionSerializability: false,
+        strictStateSerializability: false,
       },
     }),
     StoreDevtoolsModule.instrument({

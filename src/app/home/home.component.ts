@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { HomeActions } from './state/action-types';
 import { loadAllCharacters } from './state/home.actions';
 import { Observable, Subscription } from 'rxjs';
 import { Character } from './models/character';
-import { selectAllCharacters } from './state/home.selectors';
+import {
+  selectAllCharacters,
+  isLoading,
+  selectFilters,
+} from './state/home.selectors';
 import {
   tap,
   filter,
@@ -20,9 +23,11 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   characters$: Observable<Character[]>;
-  charactersSub: Subscription;
+  loading$: Observable<boolean>;
+  filters$: Observable<Filter>;
+  subscriptions: Subscription[] = [];
   speices: Array<string> = [];
   gender: Array<string> = [];
   origin: Array<string> = [];
@@ -37,7 +42,6 @@ export class HomeComponent implements OnInit {
   isMobile: boolean;
   isTablet: boolean;
   isDesktop: boolean;
-  // search
 
   constructor(
     private store: Store,
@@ -58,10 +62,12 @@ export class HomeComponent implements OnInit {
       filter((data) => !!data),
       tap((x) => this.createFilters(x))
     );
+    this.loading$ = this.store.pipe(select(isLoading));
+    this.filters$ = this.store.pipe(select(selectFilters));
   }
 
   initSub() {
-    this.breakpointObserver
+    const breakpointSub = this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
         Breakpoints.Small,
@@ -72,7 +78,9 @@ export class HomeComponent implements OnInit {
       .subscribe((result) => {
         if (result.matches) {
           this.isMobile = result.breakpoints[Breakpoints.XSmall];
-          this.isTablet = result.breakpoints[Breakpoints.Small]  || result.breakpoints[Breakpoints.Medium];
+          this.isTablet =
+            result.breakpoints[Breakpoints.Small] ||
+            result.breakpoints[Breakpoints.Medium];
           this.isDesktop =
             result.breakpoints[Breakpoints.Large] ||
             result.breakpoints[Breakpoints.XLarge];
@@ -81,25 +89,36 @@ export class HomeComponent implements OnInit {
         this.hasBackdrop = !this.isDesktop;
         this.sideBarState = this.isDesktop;
       });
-    this.charactersSub = this.characters$.subscribe((data) => {
-      this.unFilteredData = data;
-      this.filterData({});
-    });
+    this.subscriptions.push(breakpointSub);
 
-    this.form
+    const charactersSub = this.characters$.subscribe((data) => {
+      this.unFilteredData = data;
+      this.filterData();
+    });
+    this.subscriptions.push(charactersSub);
+
+    const formSub1 = this.form
       .get('search')
       .valueChanges.pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((val) => {
-        this.filterData({});
+        this.filterData();
       });
+    this.subscriptions.push(formSub1);
 
-    this.form
+    const formSub2 = this.form
       .get('sort')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((val) => {
         this.sortValue = val;
-        this.filterData({});
+        this.filterData();
       });
+    this.subscriptions.push(formSub2);
+
+    const filterSub = this.filters$.subscribe((value) => {
+      this.selectedFilter = value;
+      this.filterData();
+    });
+    this.subscriptions.push(filterSub);
   }
 
   createForm() {
@@ -135,8 +154,8 @@ export class HomeComponent implements OnInit {
     return query;
   };
 
-  filterData = (filter) => {
-    let query = this.buildFilter(filter);
+  filterData = () => {
+    let query = this.buildFilter(this.selectedFilter);
     if (!Object.keys(query).length) {
       this.filteredData = this.unFilteredData;
     }
@@ -162,15 +181,6 @@ export class HomeComponent implements OnInit {
     this.filteredData = this.sortList(filteredData);
   };
 
-  filterChange(value) {
-    this.selectedFilter = value;
-    this.filterData(value);
-  }
-
-  toggleFilter(){
-    this.sideBarState = !this.sideBarState;
-  }
-
   sortList(characters: Character[]) {
     let sortedList: Character[] = [];
     if (!this.sortValue) {
@@ -187,5 +197,9 @@ export class HomeComponent implements OnInit {
       });
     }
     return sortedList;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

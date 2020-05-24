@@ -14,3 +14,9 @@ export const isLoading = createSelector(
   selectHomeState,
   (state) => state.allCharecterLoaded
 );
+
+
+export const selectFilters = createSelector(
+  selectHomeState,
+  (state) => state.filter
+);

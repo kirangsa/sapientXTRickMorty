@@ -9,7 +9,7 @@
 
       <section class="checkbox-section text-center">
         <p formArrayName="species" *ngFor="let item of speciesFA.controls; let i = index">
-          <mat-checkbox [formControlName]="i" (change)="filterChanged('species')">
+          <mat-checkbox [formControlName]="i">
             {{ species[i] }}</mat-checkbox>
         </p>
       </section>
@@ -24,7 +24,7 @@
 
       <section class="checkbox-section text-center">
         <p formArrayName="gender" *ngFor="let item of genderFA.controls; let i = index">
-          <mat-checkbox [formControlName]="i" (change)="filterChanged('gender')">
+          <mat-checkbox [formControlName]="i" >
             {{ gender[i] }}</mat-checkbox>
         </p>
       </section>
@@ -39,7 +39,7 @@
 
       <section class="checkbox-section text-center">
         <p formArrayName="origin" *ngFor="let item of originFA.controls; let i = index">
-          <mat-checkbox [formControlName]="i" (change)="filterChanged('origin')">
+          <mat-checkbox [formControlName]="i">
             {{ origin[i] }}</mat-checkbox>
         </p>
       </section>

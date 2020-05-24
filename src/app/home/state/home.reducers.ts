@@ -12,7 +12,7 @@ export interface HomeState extends EntityState<Character> {
 export const adapter = createEntityAdapter<Character>({});
 
 export const initialHomeState = adapter.getInitialState({
-  allCharactersLoaded: false,
+  allCharecterLoaded: false,
   filter: {
     species: [],
     gender: [],
@@ -22,11 +22,14 @@ export const initialHomeState = adapter.getInitialState({
 
 export const characterReducers = createReducer(
   initialHomeState,
+  on(HomeActions.loadAllCharacters, (state, action) => {
+    return { ...state, allCharecterLoaded: true };
+  }),
   on(HomeActions.allCharactersLoaded, (state, action) =>
-    adapter.addAll(action.characters, { ...state, allCharecterLoaded: true })
+    adapter.addAll(action.characters, { ...state, allCharecterLoaded: false })
   ),
   on(HomeActions.updateFilter, (state, action) => {
-    return { ...state, filter: action.filters };
+    return { ...state, filter: { species :action.filters.species, gender: action.filters.gender, origin: action.filters.origin}};
   })
 );
 

@@ -1,17 +1,18 @@
 <mat-toolbar color="primary">Rick & Morty by Kiran</mat-toolbar>
 <mat-drawer-container class="home" [ngClass]="{'home--mobile': isMobile}" [hasBackdrop]="hasBackdrop">
-  <mat-drawer #sidenav [mode]="mode" class="home__sidebar"  [(opened)]="sideBarState">
+  <mat-drawer #sidenav [mode]="mode" class="home__sidebar" [(opened)]="sideBarState">
     <h2 class="home__title">Filters</h2>
-    <button mat-flat-button class="home__btn home__btn--align-right"  color="accent" *ngIf="!isDesktop" (click)="(sideBarState = false)">Close Filter</button>
-    <app-filter *ngIf="unFilteredData.length" [species]="speices" [gender]="gender" [origin]="origin"
-      (filterChange)=filterChange($event)>
+    <button mat-flat-button class="home__btn home__btn--align-right" color="accent" *ngIf="!isDesktop"
+      (click)="(sideBarState = false)">Close Filter</button>
+    <app-filter *ngIf="unFilteredData.length" [species]="speices" [gender]="gender" [origin]="origin">
     </app-filter>
   </mat-drawer>
   <mat-drawer-content>
     <section class="home__container">
       <section class="home__top-conatiner">
         <div>
-          <button mat-flat-button class="home__btn" color="accent" *ngIf="!isDesktop" (click)="(sideBarState = true)">Open Filter</button>
+          <button mat-flat-button class="home__btn" color="accent" *ngIf="!isDesktop"
+            (click)="(sideBarState = true)">Open Filter</button>
         </div>
         <app-chips *ngIf="selectedFilter" class="home__chips" [selectedFilter]="selectedFilter"></app-chips>
         <form [formGroup]="form">
@@ -33,7 +34,7 @@
             </div>
           </div>
         </form>
-
+        <mat-progress-bar mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
       </section>
       <div *ngFor="let item of filteredData" class="home__card" [ngClass]="{'home__card--mobile': isMobile}">
         <app-card [character]="item"> </app-card>
