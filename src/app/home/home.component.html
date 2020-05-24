@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">My App</mat-toolbar>
+<mat-drawer-container class="home" [ngClass]="{'home--mobile': isMobile}" [hasBackdrop]="hasBackdrop">
+  <mat-drawer #sidenav [mode]="mode" class="home__sidebar"  [(opened)]="sideBarState">
+    <h2 class="home__title">Filters</h2>
+    <button mat-flat-button class="home__btn home__btn--align-right"  color="accent" *ngIf="!isDesktop" (click)="(sideBarState = false)">Close Filter</button>
+    <app-filter *ngIf="unFilteredData.length" [species]="speices" [gender]="gender" [origin]="origin"
+      (filterChange)=filterChange($event)>
+    </app-filter>
+  </mat-drawer>
+  <mat-drawer-content>
+    <section class="home__container">
+      <section class="home__top-conatiner">
+        <div>
+          <button mat-flat-button class="home__btn" color="accent" *ngIf="!isDesktop" (click)="(sideBarState = true)">Open Filter</button>
+        </div>
+        <app-chips *ngIf="selectedFilter" class="home__chips" [selectedFilter]="selectedFilter"></app-chips>
+        <form [formGroup]="form">
+          <div class="home__form-block" [ngClass]="{'home__form-block--mobile': isMobile}">
+            <div class="home__search-block">
+              <mat-form-field appearance="standard">
+                <mat-label>Search by name</mat-label>
+                <input matInput formControlName="search">
+              </mat-form-field>
+            </div>
+            <div class="home__sort-block">
+              <mat-form-field appearance="standard">
+                <mat-label>Sort by id</mat-label>
+                <mat-select formControlName="sort">
+                  <mat-option value="Assending" selected>Assending</mat-option>
+                  <mat-option value="Desending">Desending</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+
+      </section>
+      <div *ngFor="let item of filteredData" class="home__card" [ngClass]="{'home__card--mobile': isMobile}">
+        <app-card [character]="item"> </app-card>
+      </div>
+    </section>
+  </mat-drawer-content>
+</mat-drawer-container>

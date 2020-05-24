@@ -1,0 +1,18 @@
+<mat-chip-list aria-label="selected filter" *ngIf="selectedFilter">
+  <mat-chip *ngFor="let species of selectedFilter.species; let i = index " color="accent" selected [removable]="true"
+    (removed)="remove(species,'species', i)">
+    {{species}}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+  <mat-chip *ngFor="let gender of selectedFilter.gender; let i = index" color="accent" selected [removable]="true"
+    (removed)="remove(gender,'gender',i)">
+    {{gender}}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+  <mat-chip *ngFor="let origin of selectedFilter.origin; let i = index" color="accent" selected [removable]="true"
+    (removed)="remove(origin,'origin', i)">
+    {{origin}}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+
+</mat-chip-list>

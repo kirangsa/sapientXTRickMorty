@@ -1,0 +1,49 @@
+<form [formGroup]="form">
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Speces
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <section class="checkbox-section text-center">
+        <p formArrayName="species" *ngFor="let item of speciesFA.controls; let i = index">
+          <mat-checkbox [formControlName]="i" (change)="filterChanged('species')">
+            {{ species[i] }}</mat-checkbox>
+        </p>
+      </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Gender
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <section class="checkbox-section text-center">
+        <p formArrayName="gender" *ngFor="let item of genderFA.controls; let i = index">
+          <mat-checkbox [formControlName]="i" (change)="filterChanged('gender')">
+            {{ gender[i] }}</mat-checkbox>
+        </p>
+      </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Origin
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <section class="checkbox-section text-center">
+        <p formArrayName="origin" *ngFor="let item of originFA.controls; let i = index">
+          <mat-checkbox [formControlName]="i" (change)="filterChanged('origin')">
+            {{ origin[i] }}</mat-checkbox>
+        </p>
+      </section>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</form>

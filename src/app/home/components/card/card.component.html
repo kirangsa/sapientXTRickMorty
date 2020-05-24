@@ -1,0 +1,36 @@
+<section class="card">
+  <header class="card__header">
+    <div class="card__img-wrap">
+      <img [src]="character.image" class="card__img" alt="">
+    </div>
+    <div class="card__heading-wrap">
+      <h2 class="card__heading">{{character.name}}</h2>
+      <span class="card__sub-heading">Id: {{character.id}} - created {{character.created | dateAgo}}</span>
+    </div>
+  </header>
+  <div class="card__body">
+    <table class="card__table">
+      <tr class="card__table-row">
+        <td class="card__table__label">status</td>
+        <td class="card__table__info">{{character.status}}</td>
+      </tr>
+      <tr class="card__table-row">
+        <td class="card__table__label">species</td>
+        <td class="card__table__info">{{character.species}}</td>
+      </tr>
+      <tr class="card__table-row">
+        <td class="card__table__label">gender</td>
+        <td class="card__table__info">{{character.gender}}</td>
+      </tr>
+      <tr class="card__table-row">
+        <td class="card__table__label">origin</td>
+        <td class="card__table__info">{{character.origin?.name}}</td>
+      </tr>
+      <tr class="card__table-row">
+        <td class="card__table__label">last location</td>
+        <td class="card__table__info">{{character.location?.name}}</td>
+      </tr>
+
+    </table>
+  </div>
+</section>
