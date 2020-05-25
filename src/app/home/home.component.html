@@ -14,7 +14,7 @@
           <button mat-flat-button class="home__btn" color="accent" *ngIf="!isDesktop"
             (click)="(sideBarState = true)">Open Filter</button>
         </div>
-        <app-chips *ngIf="selectedFilter" class="home__chips" [selectedFilter]="selectedFilter"></app-chips>
+        <app-chips *ngIf="selectedFilter.gender.length || selectedFilter.origin.length || selectedFilter.species.length" class="home__chips" [selectedFilter]="selectedFilter"></app-chips>
         <form [formGroup]="form">
           <div class="home__form-block" [ngClass]="{'home__form-block--mobile': isMobile}">
             <div class="home__search-block">
