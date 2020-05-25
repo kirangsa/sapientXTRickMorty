@@ -1,8 +1,5 @@
 .home {
-  height: 100vh;
-  &--mobile{
-    font-size: 65.5%;
-  }
+  height: calc(100vh - 64px);
   &__title {
     padding: 1.2rem;
     margin: 0;
@@ -15,7 +12,7 @@
     height: 100%;
     align-items: center;
     justify-content: center;
-    width: 350px;
+    width: 300px;
   }
   &__container {
     display: flex;
